@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model doctors {
+  iddoctors  Int     @id @default(autoincrement())
+  name       String? @db.VarChar(45)
+  age        Int?
+  sex        String? @db.VarChar(45)
+  specialist String? @db.VarChar(45)
+  date_hired String? @db.VarChar(45)
+  username   String? @unique(map: "username_UNIQUE") @db.VarChar(45)
+  password   String? @db.VarChar(45)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model patients {
+  idpatients      Int     @default(autoincrement())
+  name            String? @db.VarChar(45)
+  age             Int?
+  sex             String? @db.VarChar(45)
+  appointment     String? @db.VarChar(45)
+  patient_number  Int?
+  admission_date  String? @db.VarChar(45)
+  discharged_date String? @db.VarChar(45)
+  doctor          Int?
+
+  @@ignore
+}
+
+model users {
+  idusers  Int        @id @default(autoincrement())
+  username String?    @db.VarChar(45)
+  email    String?    @unique(map: "email_UNIQUE") @db.VarChar(45)
+  password String?    @db.VarChar(45)
+  bookings bookings[]
+}
+
+model admin {
+  idadmin  Int     @id @default(autoincrement())
+  username String? @unique(map: "username_UNIQUE") @db.VarChar(45)
+  password String? @db.VarChar(45)
+}
+
+model bookings {
+  idbookings   Int     @id @default(autoincrement())
+  booker_id    Int?
+  patient_name String? @db.VarChar(45)
+  patient_age  Int?
+  patient_sex  String? @db.VarChar(45)
+  appointment  String? @db.VarChar(45)
+  is_confirmed Int?    @db.TinyInt
+  created_at   String? @db.VarChar(45)
+  booking_date String? @db.VarChar(45)
+  users        users?  @relation(fields: [booker_id], references: [idusers], onDelete: Restrict, onUpdate: Restrict, map: "user_fk")
+
+  @@index([booker_id], map: "user_fk_idx")
+}
