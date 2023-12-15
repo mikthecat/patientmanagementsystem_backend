@@ -3,6 +3,7 @@ import {
   addBooking,
   deleteBooking,
   getBookings,
+  getUserBookings,
   updateBooking,
 } from "../services/bookings.service";
 
@@ -11,6 +12,20 @@ export const getBookingsController = async (req: Request, res: Response) => {
   try {
     const bookings = await getBookings();
 
+    return res.status(200).json({ ok: true, bookings });
+  } catch (error) {
+    return res.status(500).json({ ok: false, error });
+  }
+};
+
+// GET ALL BOOKINGS OF SPECIFIC USER
+export const getUserBookingsController = async (
+  req: Request,
+  res: Response
+) => {
+  const { id } = req.params;
+  try {
+    const bookings = await getUserBookings(Number(id));
     return res.status(200).json({ ok: true, bookings });
   } catch (error) {
     return res.status(500).json({ ok: false, error });

@@ -11,6 +11,21 @@ export const getBookings = async () => {
   }
 };
 
+//  GET ALL BOOKINGS OF A SPECIFIC USER
+export const getUserBookings = async (booker_id: number) => {
+  try {
+    const bookings = await prisma.bookings.findMany({
+      where: {
+        booker_id,
+      },
+    });
+
+    return bookings;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // ADD BOOKING
 export const addBooking = async (data: Booking) => {
   data.created_at = new Date().toISOString();

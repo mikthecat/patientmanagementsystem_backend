@@ -3,6 +3,7 @@ import {
   addBookingController,
   deleteBookingController,
   getBookingsController,
+  getUserBookingsController,
   updateBookingController,
 } from "../controllers/bookings.controller";
 
@@ -10,6 +11,9 @@ export const bookingRouter = express.Router();
 
 // ROUTE FOR GETTING ALL BOOKINGS
 bookingRouter.get("/", getBookingsController);
+
+// ROUTE FOR GETTING BOOKINGS OF SPECIFIC USER
+bookingRouter.get("/user-bookings/:id", getUserBookingsController);
 
 // ROUTE FOR ADDING A BOOKING
 bookingRouter.post("/", addBookingController);
